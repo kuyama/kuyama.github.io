@@ -1,0 +1,128 @@
+<html>
+<head>
+<title>Test for SE-855</title>
+
+<script type="text/javascript">
+!function(t,e){if(void 0===e[t]){e[t]=function(){e[t].clients.push(this),this._init=[Array.prototype.slice.call(arguments)]},e[t].clients=[];for(var r=function(t){return function(){return this["_"+t]=this["_"+t]||[],this["_"+t].push(Array.prototype.slice.call(arguments)),this}},s=["addRecord","set","trackEvent","trackPageview","trackClicks","ready"],a=0;a<s.length;a++){var c=s[a];e[t].prototype[c]=r(c)}var n=document.createElement("script");n.type="text/javascript",n.async=!0,n.src=("https:"===document.location.protocol?"https:":"http:")+"//cdn.treasuredata.com/sdk/1.9.1/td.min.js";var i=document.getElementsByTagName("script")[0];i.parentNode.insertBefore(n,i)}}("Treasure",this);
+!function(t,e,i,n){"use strict";var s=function(t){this.version="0.1.2",this.customParam=t.customParam||{},this.idSyncList=t.idSyncList||[],this.success=this._prepareSuccessCallback(t.successCallback||[]),this.fail=t.errorCallback||void 0,this.table=t.table,this.trackClicks=t.trackClicks||!1,this.trackCrossDomain=t.trackCrossDomain||!1,this.trackFingerprint=t.trackFingerprint||!1,this.trackMetaDescription=t.trackMetaDescription||!1,this.trackCookies=t.trackCookies||{},this.id="tdw_"+Math.random().toString(36).substring(7),this.sent=!1,this.tokenIntimateMerger=t.tokenIntimateMerger||void 0,this.tokenAudienceOne=t.tokenAudienceOne||void 0,this.trackParrable=t.trackParrable||!1,this.dmpCb={list:{},funcs:[],cnt:0},this.ac=this._getAccountInfo(t.initParams);var s=new e.Treasure(t.initParams);if(s.set(this.table,this.customParam),this.trackClicks&&s.trackClicks(),this.trackCrossDomain&&s.set("$global","td_global_id","td_global_id"),this.trackMetaDescription&&s.set(this.table,"td_description",this._getDescription(i)),Object.keys(this.trackCookies).length>0){var o=this;Object.keys(this.trackCookies).forEach(function(t){var e=o._getCookie(t.toString());s.set(o.table,o.trackCookies[t.toString()],e)})}return this.td=s,e[n][this.id]=this,this};s.prototype._getAccountInfo=function(t){var e=t.writeKey.split("/")[0];return("in"===t.host.split(".")[0]?"aws":t.host.split(".")[0])+"_"+e},s.prototype._setDmpCallbacks=function(){var t=this;if(void 0!==t.tokenIntimateMerger){var i={parent:t,onReceive:function(t){var e={};void 0!==t.imid&&(e.imid=t.imid),void 0!==t.segment_eids&&(e.im_segmentids=t.segment_eids),this.parent._onDmpCallback(e)}},s="//sync.im-apps.net/imid/segment?token="+t.tokenIntimateMerger+"&callback="+encodeURIComponent(n+"."+t.id+".dmpCb.list.im.onReceive");t.dmpCb.list.im=i,t.dmpCb.funcs.push(t._buildCreateScriptFunc(s))}if(void 0!==t.tokenAudienceOne){var o={parent:t,onReceive:function(t){var e={};void 0!==t.aoneuid&&(e.aoneuid=t.aoneuid),void 0!==t.segmentIds&&(e.aone_segmentids=t.segmentIds),void 0!==t.aonesegments&&(void 0!==t.aonesegments.demographic&&(e.aone_demographic=t.aonesegments.demographic),void 0!==t.aonesegments.interest&&(e.aone_interest=t.aonesegments.interest),void 0!==t.aonesegments.zipcode&&(e.aone_zipcode_home=t.aonesegments.zipcode.home,e.aone_zipcode_work=t.aonesegments.zipcode.work)),this.parent._onDmpCallback(e)}},s="//penta.a.one.impact-ad.jp/dd?oid="+t.tokenAudienceOne+"&rft=k&jsonp="+n+"."+t.id+".dmpCb.list.aone.onReceive&tgsrc=td";t.dmpCb.list.aone=o,t.dmpCb.funcs.push(t._buildCreateScriptFunc(s))}if(t.trackParrable&&void 0!==e._hawk){var a=function(){var i=t;e._hawk("parrable",function(t){var e={};void 0!==t.browserid&&(e.parrable_id=t.browserid),void 0!==t.optout&&(e.parrable_optout=t.optout),i._onDmpCallback(e)})};t.dmpCb.list.parrable=a,t.dmpCb.funcs.push(a)}},s.prototype._onDmpCallback=function(t){this.td.set(this.table,t),this.dmpCb.cnt++,Object.keys(this.dmpCb.list).length===this.dmpCb.cnt&&this.sendRequest()},s.prototype._getDescription=function(t){for(var e=t.head.children,i=e.length,n=0;n<i;n++)if("description"===e[n].getAttribute("name"))return e[n].content;return""},s.prototype._getCookie=function(t){var e,i,n,s=document.cookie.split(";");for(e=0;e<s.length;e++)if(i=s[e].substr(0,s[e].indexOf("=")),n=s[e].substr(s[e].indexOf("=")+1),(i=i.replace(/^\s+|\s+$/g,""))===t)return unescape(n);return""},s.prototype._prepareSuccessCallback=function(t){var e=[];if(void 0!==typeof t&&"function"==typeof t&&e.push(t),0!==this.idSyncList.length){var i=function(t){var e=document.createElement("img");e.src=("https:"===document.location.protocol?"https://":"http://")+t,e.width=1,e.height=1,e.style.display="none",document.body.appendChild(e)};if(this.idSyncList.indexOf("google")>=0){n=this;e.push(function(){var t="&td_client_id="+n.td.client.track.uuid+"&td_host="+document.location.host+"&account="+n.ac;i("cm.g.doubleclick.net/pixel?google_nid=treasuredata_dmp&google_cm&td_write_key=8151/fcd628065149d648b80f11448b4083528c0d8a91&td_global_id=td_global_id"+t)})}if(this.idSyncList.indexOf("digi")>=0){var n=this,s=function(t){i("bigmining.com/pixel/treasuredata2big.png?uid="+t)};e.push(function(){n.td.fetchGlobalID(s)})}if(this.idSyncList.indexOf("tapad")>=0){var n=this,o=function(t){i("pixel.tapad.com/idsync/ex/receive?partner_id=2766&partner_device_id="+t)};e.push(function(){n.td.fetchGlobalID(o)})}if(this.idSyncList.indexOf("ttd")>=0){n=this;e.push(function(){i("match.adsrvr.org/track/cmf/generic?ttd_pid=vbyog0i&ttd_tpi=1")})}}return function(){e.forEach(function(t){t()})}},s.prototype._buildCreateScriptFunc=function(t){return function(){var e=t,n=i.createElement("script");n.type="text/javascript",n.async=!0,n.src=e;var s=i.getElementsByTagName("script")[0];s.parentNode.insertBefore(n,s)}},s.prototype.sendRequest=function(){if(!this.sent){if(this.trackFingerprint&&e.Fingerprint2){var t=this;(new Fingerprint2).get(function(e){t.td.set("$global","td_fingerprint_id",e),t.td.trackEvent(t.table,{},t.success,t.fail)})}else this.td.trackEvent(this.table,{},this.success,this.fail);this.sent=!0}},s.prototype.boot=function(){this._setDmpCallbacks(),0!==this.dmpCb.funcs.length?this.dmpCb.funcs.forEach(function(t){t()}):this.sendRequest()},e[n]=s}(0,window,document,"TDWrapper");
+
+/* 出し分け用サンプルコード
+// ここから
+var host = window.location.host;
+
+// fetch user segments
+var successCallbackGID = function(global_id) {
+  // Keys
+  var uni_cst_id = 'test_cst';
+  var app_mem_id = 'test_app';
+  var td_client_id_pc = td_client_id_smp = td_client_id_other = td_client_id = tdw.td.client.track.uuid;
+  //var td_global_id_pc = td_global_id_smp = td_global_id_other = td_global_id = global_id;
+  var td_global_id_pc = td_global_id_smp = td_global_id_other = td_global_id = '3a9abbd3-a2f9-44c1-a6d1-5636938b5d3a'; // test cookie
+
+  // Tokens
+  var token_uni_cst_id = '5e3737c7-f08f-4f35-8365-ed14e69f2cfe';
+  var token_td_client_id_pc = '46d338ac-d281-4822-8c4e-7420dafecc12';
+  var token_td_client_id_smp = '2a6dbdf3-caa9-4182-8a50-ffc558eeeb24';
+  var token_td_client_id_other = '5f294386-3730-4ec1-8513-1d68414a30c6';
+  var token_td_global_id_pc = '87b3e74f-459d-4be3-aafb-e1c899112f37';
+  var token_td_global_id_smp = '68ff0bd1-0d7d-4ef6-9b99-0f867155afaf';
+  var token_td_global_id_other = '24a5c102-6a1b-4ecb-85d7-bdef8a9b483c';
+  var token_app_mem_id = 'ce1de6ba-7f36-4b66-b932-12ee79caa0e7';
+  var token_td_client_id = '0765a364-e407-4d41-b274-9d29c6ae40f0';
+  var token_td_global_id = '9aeefd1b-2376-4225-9518-2f8e23672f5d';
+
+  // fetch user segments
+  var successCallBackSegSecond = function(key, values) {
+    console.log({
+      'td_user_segments': values
+    });
+  };
+  var failureCallbackSeg = function(err) {
+    console.log(err);
+  };
+  var successCallbackSeg = function(key, values) {
+    console.log({
+      'td_user_segments': values,
+    });
+    if(values.length == 0) {
+      if(host.match(/spn/)) {
+        // fetch user segments for Smart Phone
+        tdw.td.fetchUserSegments({
+          audienceToken: [token_td_client_id_smp, token_td_global_id_smp, token_td_client_id_other, token_td_global_id_other],
+          keys: {
+            td_client_id_smp: td_client_id_smp,
+            td_global_id_smp: td_global_id_smp,
+            td_client_id_other: td_client_id_other,
+            td_global_id_other: td_global_id_other
+          }
+        }, successCallBackSegSecond, failureCallbackSeg);
+      }else{
+        // fetch user segments for PC
+        tdw.td.fetchUserSegments({
+          audienceToken: [token_td_client_id_pc, token_td_global_id_pc, token_td_client_id_other, token_td_global_id_other],
+          keys: {
+            td_client_id_pc: td_client_id_pc,
+            td_global_id_pc: td_global_id_pc,
+            td_client_id_other: td_client_id_other,
+            td_global_id_other: td_global_id_other
+          }
+        }, successCallBackSegSecond, failureCallbackSeg);
+      }
+    }
+  };
+  // fetch user segments for Members or Anounymous
+  tdw.td.fetchUserSegments({
+    audienceToken: [token_uni_cst_id, token_app_mem_id, token_td_client_id, token_td_global_id],
+    keys: {
+      uni_cst_id: uni_cst_id,
+      app_mem_id: app_mem_id,
+      td_client_id: td_client_id,
+      td_global_id: td_global_id
+    }
+  }, successCallbackSeg, failureCallbackSeg);
+};
+var failureCallbackGID = function(error) {
+  console.log(err);
+};
+var trackPageviewSuccessCallback = function() {
+  // fetch td_global_id
+  tdw.td.fetchGlobalID(successCallbackGID, failureCallbackGID);
+};
+// ここまで
+*/
+
+
+var _opts = {
+  initParams : {
+    host: 'tokyo.in.treasuredata.com',
+    writeKey: '13/266a47ae7f314fcc8cdd16df2c7bcf2ad8c28ad2',
+    database: 'kuyama_demo'
+  },
+  table : 'new_tag_test_for_se_855_7',
+  //tokenIntimateMerger: 'MOQPTLyxUnQxiIkb8Mzm7Q',
+  //tokenAudienceOne: 'b25b43b24a9e171b',
+  customParam : {
+    enc_customers_id : 'test_enc_customers_id',
+    td_campaign_cd : 'test_td_campaign_cd',
+    td_campaign_cid : 'test_td_campaign_cid',
+    td_campaign_media : 'test_td_campaign_media',
+    td_campaign_opt : 'test_td_campaign_opt',
+    prod_product_discontinued_fg : '',
+    prod_product_category : '',
+    prod_product_id : '',
+    products: '[{"product": "商品１", "sales": "100"}, {"product": "商品２", "sales": "200"}]'
+  },
+  trackCrossDomain : true,
+  // successCallback : trackPageviewSuccessCallback,  // 出し分け用コールバック
+  idSyncList : ['google']
+};
+
+var tdw = new TDWrapper(_opts);
+tdw.boot();
+</script>
+
+</head>
+<body>
+<b>New tag test for SE-855_7</b>
+</body>
+</html>
