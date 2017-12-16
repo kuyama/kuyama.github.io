@@ -1,0 +1,41 @@
+<html>
+<head>
+<title>Test for SE-855</title>
+
+<script type="text/javascript">
+!function(t,e){if(void 0===e[t]){e[t]=function(){e[t].clients.push(this),this._init=[Array.prototype.slice.call(arguments)]},e[t].clients=[];for(var r=function(t){return function(){return this["_"+t]=this["_"+t]||[],this["_"+t].push(Array.prototype.slice.call(arguments)),this}},s=["addRecord","set","trackEvent","trackPageview","trackClicks","ready"],a=0;a<s.length;a++){var c=s[a];e[t].prototype[c]=r(c)}var n=document.createElement("script");n.type="text/javascript",n.async=!0,n.src=("https:"===document.location.protocol?"https:":"http:")+"//cdn.treasuredata.com/sdk/1.9.1/td.min.js";var i=document.getElementsByTagName("script")[0];i.parentNode.insertBefore(n,i)}}("Treasure",this);
+!function(t,e,i,n){"use strict";var s=function(t){this.version="0.1.2",this.customParam=t.customParam||{},this.idSyncList=t.idSyncList||[],this.success=this._prepareSuccessCallback(t.successCallback||[]),this.fail=t.errorCallback||void 0,this.table=t.table,this.trackClicks=t.trackClicks||!1,this.trackCrossDomain=t.trackCrossDomain||!1,this.trackFingerprint=t.trackFingerprint||!1,this.trackMetaDescription=t.trackMetaDescription||!1,this.trackCookies=t.trackCookies||{},this.id="tdw_"+Math.random().toString(36).substring(7),this.sent=!1,this.tokenIntimateMerger=t.tokenIntimateMerger||void 0,this.tokenAudienceOne=t.tokenAudienceOne||void 0,this.trackParrable=t.trackParrable||!1,this.dmpCb={list:{},funcs:[],cnt:0},this.ac=this._getAccountInfo(t.initParams);var s=new e.Treasure(t.initParams);if(s.set(this.table,this.customParam),this.trackClicks&&s.trackClicks(),this.trackCrossDomain&&s.set("$global","td_global_id","td_global_id"),this.trackMetaDescription&&s.set(this.table,"td_description",this._getDescription(i)),Object.keys(this.trackCookies).length>0){var o=this;Object.keys(this.trackCookies).forEach(function(t){var e=o._getCookie(t.toString());s.set(o.table,o.trackCookies[t.toString()],e)})}return this.td=s,e[n][this.id]=this,this};s.prototype._getAccountInfo=function(t){var e=t.writeKey.split("/")[0];return("in"===t.host.split(".")[0]?"aws":t.host.split(".")[0])+"_"+e},s.prototype._setDmpCallbacks=function(){var t=this;if(void 0!==t.tokenIntimateMerger){var i={parent:t,onReceive:function(t){var e={};void 0!==t.imid&&(e.imid=t.imid),void 0!==t.segment_eids&&(e.im_segmentids=t.segment_eids),this.parent._onDmpCallback(e)}},s="//sync.im-apps.net/imid/segment?token="+t.tokenIntimateMerger+"&callback="+encodeURIComponent(n+"."+t.id+".dmpCb.list.im.onReceive");t.dmpCb.list.im=i,t.dmpCb.funcs.push(t._buildCreateScriptFunc(s))}if(void 0!==t.tokenAudienceOne){var o={parent:t,onReceive:function(t){var e={};void 0!==t.aoneuid&&(e.aoneuid=t.aoneuid),void 0!==t.segmentIds&&(e.aone_segmentids=t.segmentIds),void 0!==t.aonesegments&&(void 0!==t.aonesegments.demographic&&(e.aone_demographic=t.aonesegments.demographic),void 0!==t.aonesegments.interest&&(e.aone_interest=t.aonesegments.interest),void 0!==t.aonesegments.zipcode&&(e.aone_zipcode_home=t.aonesegments.zipcode.home,e.aone_zipcode_work=t.aonesegments.zipcode.work)),this.parent._onDmpCallback(e)}},s="//penta.a.one.impact-ad.jp/dd?oid="+t.tokenAudienceOne+"&rft=k&jsonp="+n+"."+t.id+".dmpCb.list.aone.onReceive&tgsrc=td";t.dmpCb.list.aone=o,t.dmpCb.funcs.push(t._buildCreateScriptFunc(s))}if(t.trackParrable&&void 0!==e._hawk){var a=function(){var i=t;e._hawk("parrable",function(t){var e={};void 0!==t.browserid&&(e.parrable_id=t.browserid),void 0!==t.optout&&(e.parrable_optout=t.optout),i._onDmpCallback(e)})};t.dmpCb.list.parrable=a,t.dmpCb.funcs.push(a)}},s.prototype._onDmpCallback=function(t){this.td.set(this.table,t),this.dmpCb.cnt++,Object.keys(this.dmpCb.list).length===this.dmpCb.cnt&&this.sendRequest()},s.prototype._getDescription=function(t){for(var e=t.head.children,i=e.length,n=0;n<i;n++)if("description"===e[n].getAttribute("name"))return e[n].content;return""},s.prototype._getCookie=function(t){var e,i,n,s=document.cookie.split(";");for(e=0;e<s.length;e++)if(i=s[e].substr(0,s[e].indexOf("=")),n=s[e].substr(s[e].indexOf("=")+1),(i=i.replace(/^\s+|\s+$/g,""))===t)return unescape(n);return""},s.prototype._prepareSuccessCallback=function(t){var e=[];if(void 0!==typeof t&&"function"==typeof t&&e.push(t),0!==this.idSyncList.length){var i=function(t){var e=document.createElement("img");e.src=("https:"===document.location.protocol?"https://":"http://")+t,e.width=1,e.height=1,e.style.display="none",document.body.appendChild(e)};if(this.idSyncList.indexOf("google")>=0){n=this;e.push(function(){var t="&td_client_id="+n.td.client.track.uuid+"&td_host="+document.location.host+"&account="+n.ac;i("cm.g.doubleclick.net/pixel?google_nid=treasuredata_dmp&google_cm&td_write_key=8151/fcd628065149d648b80f11448b4083528c0d8a91&td_global_id=td_global_id"+t)})}if(this.idSyncList.indexOf("digi")>=0){var n=this,s=function(t){i("bigmining.com/pixel/treasuredata2big.png?uid="+t)};e.push(function(){n.td.fetchGlobalID(s)})}if(this.idSyncList.indexOf("tapad")>=0){var n=this,o=function(t){i("pixel.tapad.com/idsync/ex/receive?partner_id=2766&partner_device_id="+t)};e.push(function(){n.td.fetchGlobalID(o)})}if(this.idSyncList.indexOf("ttd")>=0){n=this;e.push(function(){i("match.adsrvr.org/track/cmf/generic?ttd_pid=vbyog0i&ttd_tpi=1")})}}return function(){e.forEach(function(t){t()})}},s.prototype._buildCreateScriptFunc=function(t){return function(){var e=t,n=i.createElement("script");n.type="text/javascript",n.async=!0,n.src=e;var s=i.getElementsByTagName("script")[0];s.parentNode.insertBefore(n,s)}},s.prototype.sendRequest=function(){if(!this.sent){if(this.trackFingerprint&&e.Fingerprint2){var t=this;(new Fingerprint2).get(function(e){t.td.set("$global","td_fingerprint_id",e),t.td.trackEvent(t.table,{},t.success,t.fail)})}else this.td.trackEvent(this.table,{},this.success,this.fail);this.sent=!0}},s.prototype.boot=function(){this._setDmpCallbacks(),0!==this.dmpCb.funcs.length?this.dmpCb.funcs.forEach(function(t){t()}):this.sendRequest()},e[n]=s}(0,window,document,"TDWrapper");
+
+var _opts = {
+  initParams : {
+    host: 'tokyo.in.treasuredata.com',
+    writeKey: '26/f1b8bb946c33dcbf56f2d557bade34e17ab57f10',
+    database: 'td_kuyama'
+  },
+  table : 'new_tag_test_on_se_855_20171216',
+  //tokenIntimateMerger: 'MOQPTLyxUnQxiIkb8Mzm7Q',
+  tokenAudienceOne: 'b25b43b24a9e171b',
+  customParam : {
+    enc_customers_id : 'test_enc_customers_id',
+    td_campaign_cd : 'test_td_campaign_cd',
+    td_campaign_cid : 'test_td_campaign_cid',
+    td_campaign_media : 'test_td_campaign_media',
+    td_campaign_opt : 'test_td_campaign_opt',
+    prod_product_discontinued_fg : '',
+    prod_product_category : '',
+    prod_product_id : '',
+    products: '[{"product": "商品１", "sales": "100"}, {"product": "商品２", "sales": "200"}]'
+  },
+  trackCrossDomain : true,
+  // successCallback : trackPageviewSuccessCallback,  // 出し分け用コールバック
+  idSyncList : ['google']
+};
+var tdw = new TDWrapper(_opts);
+tdw.boot();
+</script>
+
+</head>
+<body>
+<b>New tag test for SE-855_7</b>
+</body>
+</html>
